@@ -8,6 +8,8 @@ package facades;
 import dto.PersonDTO;
 import entities.Person;
 import errorhandling.NotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
@@ -42,6 +44,20 @@ public class PersonFacade {
         try {
             long personCount = (long) em.createQuery("SELECT COUNT(p) FROM Person p").getSingleResult();
             return personCount;
+        } finally {
+            em.close();
+        }
+    }
+    
+     public List<PersonDTO> getAllPersons() {
+        EntityManager em = getEntityManager();
+        List<PersonDTO> pDTOList = new ArrayList();
+        try {
+            TypedQuery<Person> q = em.createNamedQuery("Person.getAll", Person.class);
+            for (Person p : q.getResultList()) {
+                pDTOList.add(new PersonDTO(p));
+            }
+            return pDTOList;
         } finally {
             em.close();
         }

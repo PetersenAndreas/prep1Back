@@ -52,7 +52,7 @@ public class SetupDummies {
             Address address2 = new Address("Jørgensesgade", "København", "2400");
             
             Person person1 = new Person("Khabib", "Nurmagomedov", "LwChamp@gmail.com", "12345678", hobbies1, address1);
-            Person person2 = new Person("Tony", "Ferguson", "PplChamp@gmail.com", "12345678", hobbies2, address2);
+            Person person2 = new Person("Tony", "Ferguson", "PplChamp@gmail.com", "87654321", hobbies2, address2);
             
             em.persist(hobby1);
             em.persist(hobby2);
