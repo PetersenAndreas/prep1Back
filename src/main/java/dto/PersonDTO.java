@@ -19,6 +19,7 @@ public class PersonDTO {
     private String lastName;
     private String email;
     private String phone;
+    private Long id;
     
     private List<HobbyDTO> hobbies;
     private AddressDTO address;
@@ -27,6 +28,7 @@ public class PersonDTO {
     }
 
     public PersonDTO(Person person) {
+        this.id = person.getId();
         this.firstName = person.getFirstName();
         this.lastName = person.getLastName();
         this.email = person.getEmail();
@@ -82,7 +84,13 @@ public class PersonDTO {
     public void setAddress(AddressDTO address) {
         this.address = address;
     }
-    
-    
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
     
 }

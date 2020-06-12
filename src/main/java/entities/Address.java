@@ -32,9 +32,6 @@ public class Address implements Serializable {
     private String street;
     private String city;
     private String zip;
-    
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<Person> persons = new ArrayList();
 
     public Address(String street, String city, String zip) {
         this.street = street;
@@ -76,9 +73,4 @@ public class Address implements Serializable {
     public void setZip(String zip) {
         this.zip = zip;
     }
-    
-    public List<Person> getPersons() {
-        return persons;
-    }
-
 }

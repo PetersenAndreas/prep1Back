@@ -41,17 +41,19 @@ public class Person implements Serializable {
     private String email;
     private String phone;
     
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne
     private Address address;
     
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany
     private List<Hobby> hobbies = new ArrayList();
 
-    public Person(String firstName, String lastName, String email, String phone) {
+    public Person(String firstName, String lastName, String email, String phone, List<Hobby> hobbies, Address address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
+        this.address = address;
+        this.hobbies = hobbies;
     }
 
     public Person() {
@@ -97,22 +99,6 @@ public class Person implements Serializable {
         this.phone = phone;
     }
     
-    public void addAddressToPerson(Address address) {
-        this.address = address;
-        if (!address.getPersons().contains(this)) {
-            address.getPersons().add(this);
-        }
-    }
-    
-    public void addHobbyToPerson(Hobby hobby) {
-        if (!this.hobbies.contains(hobby)) {
-            this.hobbies.add(hobby);
-        }
-        if (!hobby.getPersons().contains(this)) {
-            hobby.getPersons().add(this);
-        }
-    }
-
     public Address getAddress() {
         return address;
     }
