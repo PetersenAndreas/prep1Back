@@ -1,5 +1,6 @@
 package facades;
 
+import dto.HobbyDTO;
 import dto.PersonDTO;
 import entities.Address;
 import entities.Hobby;
@@ -24,17 +25,18 @@ import utils.EMF_Creator.Strategy;
 
 //Uncomment the line below, to temporarily disable this test
 //@Disabled
-public class PersonFacadeTest {
+public class HobbyFacadeTest {
 
     private static EntityManagerFactory emf;
-    private static PersonFacade FACADE;
+    private static HobbyFacade FACADE;
     private static Person person1, person2, person3;
     private static Hobby hobby1, hobby2, hobby3;
     private static Address address1, address2;
     private static Person[] personArray;
     private static Long highestId;
+    private static Hobby[] hobbyArray;
 
-    public PersonFacadeTest() {
+    public HobbyFacadeTest() {
     }
 
     //@BeforeAll
@@ -45,7 +47,7 @@ public class PersonFacadeTest {
                 "dev",
                 "ax2",
                 EMF_Creator.Strategy.DROP_AND_CREATE);
-        FACADE = PersonFacade.getPersonFacade(emf);
+        FACADE = HobbyFacade.getHobbyFacade(emf);
     }
 
     /*   **** HINT **** 
@@ -57,7 +59,7 @@ public class PersonFacadeTest {
     @BeforeAll
     public static void setUpClassV2() {
        emf = EMF_Creator.createEntityManagerFactory(DbSelector.TEST, Strategy.DROP_AND_CREATE);
-       FACADE = PersonFacade.getPersonFacade(emf);
+       FACADE = HobbyFacade.getHobbyFacade(emf);
     }
 
     @AfterAll
@@ -105,6 +107,7 @@ public class PersonFacadeTest {
             em.close();
         }
         personArray = new Person[]{person1, person2, person3};
+        hobbyArray = new Hobby[] {hobby1, hobby2, hobby3};
 
         highestId = 0L;
         for (Person person : personArray) {
@@ -135,53 +138,16 @@ public class PersonFacadeTest {
     }
 
     @Test
-    public void testPersonFacade() {
-        long result = FACADE.getPersonCount();
-        int expectedResult = personArray.length;
+    public void testHobbyFacade() {
+        long result = FACADE.getHobbyCount();
+        int expectedResult = hobbyArray.length;
         assertEquals(expectedResult, result);
     }
     
     @Test
-    public void testGetPersonById() throws NotFoundException {
-        Long expectedID = person2.getId();
-        Person expectedPerson = person2;
-        PersonDTO result = FACADE.getPersonOnId(expectedID);
-        assertEquals(result.getId(), expectedID);
-        assertEquals(result.getFirstName(), expectedPerson.getFirstName());
-        assertEquals(result.getLastName(), expectedPerson.getLastName());
-        //assertEquals(result.getHobbies(), expectedPerson.getHobbies());
+    public void testGetAllHobby() throws NotFoundException {
+        List<HobbyDTO> hobbies = FACADE.getAllHobbies();
+        assertEquals(3, hobbies.size());
     }
     
-    @Test
-    public void testGetPersonByEmail() throws NotFoundException {
-        String expectedEmail = person1.getEmail();
-        Person expectedPerson = person1;
-        PersonDTO result = FACADE.getPersonOnEmail(expectedEmail);
-        assertEquals(result.getEmail(), expectedEmail);
-        assertEquals(result.getFirstName(), expectedPerson.getFirstName());
-        assertEquals(result.getLastName(), expectedPerson.getLastName());
-    }
-    
-    @Test
-    public void testGetPersonByPhone() throws NotFoundException {
-        String expectedPhone = person1.getPhone();
-        Person expectedPerson = person1;
-        PersonDTO result = FACADE.getPersonOnPhone(expectedPhone);
-        assertEquals(result.getPhone(), expectedPhone);
-        assertEquals(result.getFirstName(), expectedPerson.getFirstName());
-        assertEquals(result.getLastName(), expectedPerson.getLastName());
-    }
-    
-    @Test
-    public void testGetPersonByHobbies() throws NotFoundException {
-        List<PersonDTO> persons = FACADE.getPersonsFromHobby(hobby2.getName());
-        assertEquals(2, persons.size());
-    }
-    
-    @Test
-    public void testGetAllPerson() throws NotFoundException {
-        List<PersonDTO> persons = FACADE.getAllPersons();
-        assertEquals(3, persons.size());
-    }
-
 }

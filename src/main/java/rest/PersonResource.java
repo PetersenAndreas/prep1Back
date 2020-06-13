@@ -71,5 +71,13 @@ public class PersonResource {
         PersonDTO person = FACADE.getPersonOnPhone(phone);
         return GSON.toJson(person);
     }
+    
+    @Path("hobby/{hobby}")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getPersonByHobby(@PathParam("hobby") String hobby) throws NotFoundException {
+        List<PersonDTO> persons = FACADE.getPersonsFromHobby(hobby);
+        return GSON.toJson(persons);
+    }
  
 }

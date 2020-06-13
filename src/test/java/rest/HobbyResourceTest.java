@@ -18,6 +18,7 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +29,7 @@ import utils.EMF_Creator.Strategy;
 
 //Uncomment the line below, to temporarily disable this test
 //@Disabled
-public class PersonResourceTest {
+public class HobbyResourceTest {
 
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
@@ -45,7 +46,7 @@ public class PersonResourceTest {
         return GrizzlyHttpServerFactory.createHttpServer(BASE_URI, rc);
     }
     
-    public PersonResourceTest() {
+    public HobbyResourceTest() {
     }
 
     @BeforeAll
@@ -73,52 +74,12 @@ public class PersonResourceTest {
     //TODO -- Make sure to change the EntityClass used below to use YOUR OWN (renamed) Entity class
     @BeforeEach
     public void setUp() {
-//        EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.DROP_AND_CREATE);
-//        EntityManager em = emf.createEntityManager();
-//
 //        // IMPORTAAAAAAAAAANT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //        // This breaks one of the MOST fundamental security rules in that it ships with default users and passwords
 //        // CHANGE the three passwords below, before you uncomment and execute the code below
 //        // Also, either delete this file, when users are created or rename and add to .gitignore
 //        // Whatever you do DO NOT COMMIT and PUSH with the real passwords
-//        hobby1 = new Hobby("Swimming", "Kinda wet");
-//        hobby2 = new Hobby("Football", "Kicking a ball");
-//        hobby3 = new Hobby("Tennis", "Small yellow-ish ball");
-//         hobby4 = new Hobby("Haandbold", "Running peolpe with a ball");
-//         address1 = new Address("Copenhagenvej", "Copenhagen", "2300");
-//         address2 = new Address("Herningsvej", "Herning", "7429");
-//         address3 = new Address("Glostrupvej", "Glostrup", "2600");
-//        List<Hobby> hobbiesL1 = new ArrayList<>();
-//        List<Hobby> hobbiesL2 = new ArrayList<>();
-//        List<Hobby> hobbiesL3 = new ArrayList<>();
-//
-//        try {
-//            hobbiesL1.add(hobby1);
-//            hobbiesL1.add(hobby2);
-//            hobbiesL2.add(hobby3);
-//            hobbiesL2.add(hobby4);
-//            hobbiesL3.add(hobby1);
-//            hobbiesL3.add(hobby4);
-//
-//             p1 = new Person("Khabib", "Nurmagomedov", "LwChamp@gmail.com", "12345678", hobbiesL1, address1);
-//             p2 = new Person("Tony", "Ferguson", "PplChamp@gmail.com", "98765432", hobbiesL2, address2);
-//             p3 = new Person("Mohamed", "Salah", "Pharaoh@gmail.com", "76548769", hobbiesL3, address3);
-//
-//            em.getTransaction().begin();
-//            em.persist(hobby1);
-//            em.persist(hobby2);
-//            em.persist(hobby3);
-//            em.persist(hobby4);
-//            em.persist(address1);
-//            em.persist(address2);
-//            em.persist(address3);
-//            em.persist(p1);
-//            em.persist(p2);
-//            em.persist(p3);
-//            em.getTransaction().commit();
-//        } finally {
-//            em.close();
-//        }
+
     EntityManager em = emf.createEntityManager();
         address1 = new Address("KagsåKollegiet", "Copenhagen", "2300");
         address2 = new Address("Fredensbovej", "Hvidovre", "2650");
@@ -171,100 +132,23 @@ public class PersonResourceTest {
     @Test
     public void testServerIsUp() {
         System.out.println("Testing is server UP");
-        given().when().get("/person").then().statusCode(200);
+        given().when().get("/hobby").then().statusCode(200);
     }
-
-//    //GET
-//    @Test
-//    public void testGetAllPersons() {
-//        given()
-//                .contentType("application/json")
-//                .get("/persons/all").then()
-//                .assertThat()
-//                .statusCode(HttpStatus.OK_200.getStatusCode())
-//                .body( hasSize(3));
-//    }
-
-//    //GET
-//    @Test
-//    public void testPersonsListContains() throws Exception {
-//        given()
-//                .contentType("application/json")
-//                .get("/persons/all").then()
-//                .assertThat()
-//                .statusCode(HttpStatus.OK_200.getStatusCode())
-//                .body(".firstName", containsInAnyOrder("Khabib", "Tony", "Mohamed"))
-//                .body(".lastName", containsInAnyOrder("Nurmagomedov", "Ferguson", "Salah"));
-//    }
 
     //GET
     @Test
-    public void testGetPersonById() {
+    public void testGetAllHobbies() {
         given()
                 .contentType("application/json")
-                .get("/person/id/" + p3.getId()).then()
+                .get("/hobby/all").then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("firstName", equalTo("Allan"))
-                .body("lastName", equalTo("Simonsen"));
+                .body("name", containsInAnyOrder("Swimming", "Fishing", "Gaming", "D&D"))
+                .body("description", containsInAnyOrder("Wasting time in front of computer or TV",
+                        "Getting wet",
+                        "Very nerdy game",
+                        "Getting up early and doing nothing for 5 hours"));
     }
 
-//    //GET
-//    @Test
-//    public void testGetPersonByIdFail() {
-//        given()
-//                .contentType("application/json")
-//                .get("/persons/" + 0).then()
-//                .assertThat()
-//                .statusCode(HttpStatus.NOT_FOUND_404.getStatusCode())
-//                .body("code", equalTo(404))
-//                .body("message", equalTo("No person found with this id"));
-//    }
 
-    //GET
-    @Test
-    public void testGetPersonByPhone() {
-        given()
-                .contentType("application/json")
-                .get("/person/phone/" + p2.getPhone()).then()
-                .assertThat()
-                .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("firstName", equalTo("Tobias"))
-                .body("lastName", equalTo("AnkerB-J"));
-    }
-//
-//    //GET
-//    @Test
-//    public void testGetPersonByPhoneFail() {
-//        given()
-//                .contentType("application/json")
-//                .get("/persons/phone/" + 00000000).then()
-//                .assertThat()
-//                .statusCode(HttpStatus.NOT_FOUND_404.getStatusCode())
-//                .body("code", equalTo(404))
-//                .body("message", equalTo("No content found for this request"));
-//    }
-
-    //GET
-    @Test
-    public void testGetPersonByEmail() {
-        given()
-                .contentType("application/json")
-                .get("/person/email/" + p1.getEmail()).then()
-                .assertThat()
-                .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("firstName", equalTo("Caroline"))
-                .body("lastName", equalTo("HoegIversen"));
-    }
-    
-    @Test
-    public void testGetPersonsByHobby() {
-        given()
-                .contentType("application/json")
-                .get("/person/hobby/" + hobby1.getName()).then()
-                .assertThat()
-                .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("firstName", containsInAnyOrder("Caroline", "Tobias"))
-                .body("lastName", containsInAnyOrder("HoegIversen", "AnkerB-J"));
-    }
 }

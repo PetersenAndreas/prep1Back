@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 /**
@@ -22,7 +23,10 @@ import javax.persistence.NamedQuery;
  * @author andre
  */
 @Entity
-@NamedQuery(name = "Hobby.deleteAllRows", query = "DELETE from Hobby")
+@NamedQueries({
+    @NamedQuery(name = "Hobby.deleteAllRows", query = "DELETE FROM Hobby"),
+    @NamedQuery(name = "Hobby.getAll", query = "SELECT p FROM Hobby p")    
+})
 public class Hobby implements Serializable {
 
     private static final long serialVersionUID = 1L;
